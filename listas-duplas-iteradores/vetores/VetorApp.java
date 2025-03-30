@@ -1,45 +1,41 @@
-import java.util.Arrays;
 import estruturas.Lista;
+import estruturas.Iterador;
 
 public class VetorApp {
     public static void main(String[] args) {
-        int[] vetor = {2, 7, 9, 12, 16, 21, 27, 33, 42, 54};
-        System.out.println("Vetor original: " + Arrays.toString(vetor));
-        
-        // Busca binária por um valor informado
-        int valorBusca = 16;
-        int indiceEncontrado = buscaBinaria(vetor, valorBusca);
-        if (indiceEncontrado != -1) {
-            System.out.println("Valor " + valorBusca + " encontrado no índice " + indiceEncontrado);
-        } else {
-            System.out.println("Valor " + valorBusca + " não encontrado.");
-        }
-        
-        // Inserir no início do vetor
-        int novoValor = 5;
-        vetor = inserirNoInicio(vetor, novoValor);
-        System.out.println("Vetor após inserção no início: " + Arrays.toString(vetor));
-    }
+        Lista lista = new Lista();
+        lista.inserirNoFinal(2);
+        lista.inserirNoFinal(7);
+        lista.inserirNoFinal(9);
+        lista.inserirNoFinal(12);
+        lista.inserirNoFinal(16);
+        lista.inserirNoFinal(21);
+        lista.inserirNoFinal(27);
+        lista.inserirNoFinal(33);
+        lista.inserirNoFinal(42);
+        lista.inserirNoFinal(54);
 
-    public static int buscaBinaria(int[] vetor, int valor) {
-        int inicio = 0, fim = vetor.length - 1;
-        while (inicio <= fim) {
-            int meio = (inicio + fim) / 2;
-            if (vetor[meio] == valor) {
-                return meio;
-            } else if (vetor[meio] < valor) {
-                inicio = meio + 1;
-            } else {
-                fim = meio - 1;
-            }
-        }
-        return -1;
-    }
+        System.out.println("Lista antes das operações:");
+        lista.mostrarNos();
 
-    public static int[] inserirNoInicio(int[] vetor, int novoValor) {
-        int[] novoVetor = new int[vetor.length + 1];
-        novoVetor[0] = novoValor;
-        System.arraycopy(vetor, 0, novoVetor, 1, vetor.length);
-        return novoVetor;
+        Iterador iterador = lista.getIterador();
+
+        iterador.proximo();
+        iterador.inserirApos(30);
+        System.out.println("Lista após inserir 30 após o atual:");
+        lista.mostrarNos();
+
+        iterador.removerApos();
+        System.out.println("Lista após remover após o atual:");
+        lista.mostrarNos();
+
+        iterador.proximo();
+        iterador.inserirAntes(18);
+        System.out.println("Lista após inserir 18 antes do atual:");
+        lista.mostrarNos();
+
+        iterador.removerAntes();
+        System.out.println("Lista após remover antes do atual:");
+        lista.mostrarNos();
     }
 }

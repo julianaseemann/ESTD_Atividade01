@@ -1,52 +1,66 @@
 package estruturas;
 
 public class Lista {
+    private Nodo inicio;
+    private Nodo fim;
+    private int tamanho;
 
-    public No inicio;
-
-    public void Lista() {
+    public Lista() {
         this.inicio = null;
+        this.fim = null;
+        this.tamanho = 0;
     }
 
-    public void adicionarAoInicio(int valor) {
-        No no = new No(valor);
-
-        if (this.inicio == null) {
-            this.inicio = no;
-            return;
+    public void inserirNoFinal(int valor) {
+        Nodo novoNodo = new Nodo(valor);
+        if (fim == null) {
+            inicio = fim = novoNodo;
+        } else {
+            fim.setProximo(novoNodo);
+            novoNodo.setAnterior(fim);
+            fim = novoNodo;
         }
-
-        this.inicio.anterior = no;
-
-        no.proximo = this.inicio;
-        this.inicio = no;
+        tamanho++;
     }
 
-    public void mostrarNos() {
-        Iterador iterador = this.getIterador();
-        
-        while (iterador.getAtual() != null) {
-            iterador.display();
+    public void inserirAposValor(int valorReferencia, int novoValor) {
+        Nodo atual = inicio;
+        while (atual != null && atual.getValor() != valorReferencia) {
+            atual = atual.getProximo();
+        }
+        if (atual != null) {
+            Nodo novoNodo = new Nodo(novoValor);
+            novoNodo.setProximo(atual.getProximo());
+            novoNodo.setAnterior(atual);
+            if (atual.getProximo() != null) {
+                atual.getProximo().setAnterior(novoNodo);
+            }
+            atual.setProximo(novoNodo);
+            if (atual == fim) {
+                fim = novoNodo;
+            }
+            tamanho++;
         }
     }
 
-    public void remover(int valor) {
-        No noAux = this.inicio;
+    public int getNumeroNos() {
+        return tamanho;
+    }
 
-        while (noAux != null && noAux.dado != valor) {
-            noAux = noAux.proximo;
-        }
-
-        if (noAux == null) {
-            System.out.println("Valor não encontrado");
-            return;
-        }
-
-        noAux.anterior.proximo = noAux.proximo;
-        noAux.proximo.anterior = noAux.anterior;
+    public void adicionarTamanho() {
+        System.out.println("Tamanho da lista: " + tamanho);
     }
 
     public Iterador getIterador() {
-        return new Iterador(this, this.inicio);
+        return new Iterador(inicio);
+    }
+
+    public void mostrarNos() {
+        Nodo atual = inicio;
+        while (atual != null) {
+            System.out.print(atual.getValor() + " ");
+            atual = atual.getProximo();
+        }
+        System.out.println();
     }
 }

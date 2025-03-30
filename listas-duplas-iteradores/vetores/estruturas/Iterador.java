@@ -1,58 +1,70 @@
 package estruturas;
 
 public class Iterador {
-    
-    Lista lista;
-    No atual;
+    private Nodo atual;
 
-    public Iterador(Lista lista, No atual) {
-        this.lista = lista;
-        this.atual = atual;
+    public Iterador(Nodo primeiro) {
+        this.atual = primeiro;
     }
 
-    public Boolean haProximo() {
-        return this.atual.proximo != null;
-    }
-
-    public Boolean haAnterior() {
-        return this.atual.anterior != null;
+    public boolean temProximo() {
+        return atual != null && atual.getProximo() != null;
     }
 
     public void proximo() {
-        this.atual = atual.proximo;
-    }
-
-    public int getDadoAnterior() {
-        return this.atual.anterior.dado;
-    }
-
-    public int getDadoProximo() {
-        return this.atual.proximo.dado;
-    }
-
-    public int getDado() {
-        return this.atual.dado;
-    }
-
-    public No getAtual() {
-        return this.atual;
-    }
-
-    public void resetar() {
-        this.atual = this.lista.inicio;
-    }
-
-    public void display() {
-        if (this.haAnterior()) {
-            System.out.print("Anterior -> " + this.getDadoAnterior() + " | ");
+        if (temProximo()) {
+            atual = atual.getProximo();
         }
+    }
 
-        System.out.print("No " + this.getDado());
-        
-        if (this.haProximo()) {
-            System.out.println(" | Proximo -> " + this.getDadoProximo());
+    public void inserirApos(int valor) {
+        if (atual == null) return;
+
+        Nodo novoNodo = new Nodo(valor);
+        novoNodo.setProximo(atual.getProximo());
+        novoNodo.setAnterior(atual);
+
+        if (atual.getProximo() != null) {
+            atual.getProximo().setAnterior(novoNodo);
         }
-        System.out.println("");
-        this.proximo();
+        atual.setProximo(novoNodo);
+    }
+
+    public void removerApos() {
+        if (atual == null || atual.getProximo() == null) return;
+
+        Nodo nodoRemover = atual.getProximo();
+        atual.setProximo(nodoRemover.getProximo());
+
+        if (nodoRemover.getProximo() != null) {
+            nodoRemover.getProximo().setAnterior(atual);
+        }
+    }
+
+    public void inserirAntes(int valor) {
+        if (atual == null) return;
+
+        Nodo novoNodo = new Nodo(valor);
+        novoNodo.setAnterior(atual.getAnterior());
+        novoNodo.setProximo(atual);
+
+        if (atual.getAnterior() != null) {
+            atual.getAnterior().setProximo(novoNodo);
+        }
+        atual.setAnterior(novoNodo);
+    }
+
+    public void removerAntes() {
+        if (atual == null || atual.getAnterior() == null) return;
+
+        Nodo nodoRemover = atual.getAnterior();
+        if (nodoRemover.getAnterior() != null) {
+            nodoRemover.getAnterior().setProximo(atual);
+        }
+        atual.setAnterior(nodoRemover.getAnterior());
+    }
+
+    public Nodo getAtual() {
+        return atual;
     }
 }
