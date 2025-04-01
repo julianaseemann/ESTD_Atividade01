@@ -2,49 +2,47 @@ package estruturas;
 
 public class Vetor {
 
-    public Integer[] elementos; // 3fc -> 4fd
-    private int tamanho;
-    private int capacidade;
+    private Integer[] elementos; // Array para armazenar os valores
+    private int tamanho;         // Número de elementos no vetor
+    private int capacidade;      // Capacidade máxima atual do vetor
 
+    // Construtor: inicializa o vetor com a capacidade informada
     public Vetor(int capacidade) {
         this.elementos = new Integer[capacidade];
         this.capacidade = capacidade;
         this.tamanho = 0;
     }
 
+    // Adiciona um valor ao vetor, aumentando a capacidade se necessário
     public void adicionar(Integer valor) {
-        if (this.capacidade == this.tamanho) {
-            this.aumentarCapacidade();
+        if (tamanho == capacidade) {
+            aumentarCapacidade();
         }
-
-        this.elementos[this.tamanho] = valor;
-        this.tamanho++;
+        elementos[tamanho++] = valor;
     }
 
+    // Aumenta a capacidade do vetor em 50% quando necessário
     private void aumentarCapacidade() {
-        int novaCapacidade = this.capacidade + (this.capacidade/2);
-        Integer[] novosElementos = new Integer[novaCapacidade];
+        capacidade += capacidade / 2;
+        Integer[] novosElementos = new Integer[capacidade];
 
-        for (int i =0; i<this.tamanho; i++) {
-            novosElementos[i] = this.elementos[i];
-        }
-
-        this.elementos = novosElementos;
-        this.capacidade = novaCapacidade;
+        System.arraycopy(elementos, 0, novosElementos, 0, tamanho); // Copia os elementos
+        elementos = novosElementos;
     }
 
+    // Exibe os elementos do vetor
     public void mostrarElementos() {
-        System.out.println("-----");
-        System.out.println("Elementos no vetor");
-        for (int i=0; i < tamanho; i++) {
-            System.out.println(this.elementos[i]);
+        System.out.println("Elementos no vetor:");
+        for (int i = 0; i < tamanho; i++) {
+            System.out.println(elementos[i]);
         }
         System.out.println("-----");
     }
 
+    // Verifica se um valor está presente no vetor
     public void contem(Integer valor) {
-        for (int i=0; i < tamanho; i++) {
-            if (this.elementos[i] == valor) {
+        for (Integer elemento : elementos) {
+            if (elemento != null && elemento.equals(valor)) {
                 System.out.println("Valor encontrado");
                 return;
             }
@@ -52,29 +50,26 @@ public class Vetor {
         System.out.println("Valor não encontrado");
     }
 
+    // Remove um elemento por posição
     public void remover(int posicao) {
-        if (posicao > this.tamanho) {
-            System.out.println("Posição informada é inválida");
+        if (posicao < 0 || posicao >= tamanho) {
+            System.out.println("Posição inválida");
             return;
         }
 
-        for (int i = posicao; i < this.tamanho-1; i++) {
-            this.elementos[i] = this.elementos[i+1];
-        }
-
-        this.elementos[this.tamanho-1] = null;
-        this.tamanho--;
+        System.arraycopy(elementos, posicao + 1, elementos, posicao, tamanho - posicao - 1);
+        elementos[--tamanho] = null; // Diminui o tamanho e remove a referência do último elemento
     }
 
+    // Remove um elemento pelo valor
     public void removerPorValor(Integer valor) {
-        for (int i=0; i<this.tamanho; i++) {
-            if (this.elementos[i] == valor) {
-                this.remover(i);
+        for (int i = 0; i < tamanho; i++) {
+            if (elementos[i].equals(valor)) {
+                remover(i);
                 System.out.println("Item removido");
                 return;
             }
         }
-
         System.out.println("Item não encontrado");
     }
 }
